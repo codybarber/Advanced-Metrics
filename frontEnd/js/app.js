@@ -4,15 +4,15 @@ app.config(function($routeProvider) {
   $routeProvider
 
   .when('/', {
-    templateUrl: 'home.html',
+    templateUrl: '/static/home.html',
     controller: 'MainController'
   })
   .when('/signup', {
-    templateUrl: 'signup.html',
+    templateUrl: '/static/signup.html',
     controller: 'SignupController'
   })
   .when('/login', {
-    templateUrl: 'login.html',
+    templateUrl: '/static/login.html',
     controller: 'LoginController'
   });
 });
