@@ -141,6 +141,7 @@ app.controller('SignupController', function($scope, $http, $location) {
 });
 
 app.controller('LoginController', function($scope, $http, $location) {
+
   $scope.login = function() {
     $http({
       url: API + '/sign-in',
@@ -162,7 +163,7 @@ app.controller('LoginController', function($scope, $http, $location) {
 });
 
 app.controller('DashboardController', function($scope, $http, $location) {
-  
+
 });
 
 app.controller('AddTeamController', function($scope, $http, $location) {

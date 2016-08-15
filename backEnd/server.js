@@ -4,12 +4,18 @@ var pgp = require('pg-promise')();
 var bcrypt = require('my-bcrypt');
 var bodyParser = require('body-parser');
 var cors = require('cors');
+var randomtoken = require('rand-token');
+
 
 var db = pgp('postgres://localhost:5432/baseball_db');
 
 app.use(bodyParser.json());
 
 app.post('/sign-in', function(request, response) {
+
+  var uid = '';
+  var token = '';
+
   db.any('SELECT username, password FROM statters WHERE username = $1 and password = $2', [request.body.username, request.body.password])
   .then(function(data) {
     response.send(data);
