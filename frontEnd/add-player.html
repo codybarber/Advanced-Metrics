@@ -1,9 +1,9 @@
-<form class="" action="index.html" method="post">
+<form method="post" class="add-player-form" novalidate name="form">
   <div class="row">
     <div class="medium-6 columns">
       <label>
         Player Name:
-        <input type="text" placeholder="enter player name here"></input>
+        <input type="text" placeholder="enter player name here" ng-model="playerName"></input>
       </label>
     </div>
   </div>
@@ -11,7 +11,7 @@
     <div class="medium-6 columns">
       <label>
         Player Age:
-        <input type="number" name="age" placeholder="enter player's age here">
+        <input type="number" name="age" placeholder="enter player's age here" ng-model="playerAge">
       </label>
     </div>
   </div>
@@ -19,18 +19,26 @@
     <div class="medium-6 columns">
       <label>
         Number:
-        <input type="number" name="number" placeholder="enter player's number here"></input>
+        <input type="number" name="number" placeholder="enter player's number here" ng-model="playerNumber"></input>
       </label>
     </div>
   </div>
   <div class="row">
     <div class="medium-6 columns">
       <div class="medium-6 columns">
-        <button type="submit" class="expanded button" name="button">Add Player<i class="icon ion-plus-round right"></i></button>
+        <button type="submit" class="expanded button" name="button" ng-click="submitPlayer()">Add Player<i class="icon ion-plus-round right"></i></button>
       </div>
       <div class="medium-6 columns">
-        <button type="submit" class="success expanded button" name="button">Finished<i class="icon ion-checkmark-round right"></i></button>
+        <button type="submit" class="success expanded button" name="button" ng-click="finished()">Finished<i class="icon ion-checkmark-round right"></i></button>
       </div>
     </div>
   </div>
 </form>
+<div class="row">
+  <div class="medium-6 columns">
+    <ul>
+      <li ng-repeat="player in playerList">{{player.number}}--{{player.player_name}}</li>
+    </ul>
+  </div>
+
+</div>

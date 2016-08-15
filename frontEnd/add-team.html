@@ -1,9 +1,9 @@
-<form class="" action="index.html" method="post">
+<form method="post" novalidate class="add-team-form">
   <div class="row">
     <div class="medium-6 columns">
       <label>
         Team Name:
-        <input type="text" placeholder="enter team name here"></input>
+        <input type="text" placeholder="enter team name here" ng-model="teamName"></input>
       </label>
     </div>
   </div>
@@ -11,7 +11,7 @@
     <div class="medium-6 columns">
       <label>
         Select Sport:
-        <select>
+        <select ng-model="teamSport">
           <option value="baseball">Baseball</option>
           <option value="basketball">Basketball</option>
           <option value="football">Football</option>
@@ -25,12 +25,12 @@
     <div class="medium-6 columns">
       <label>
         Select Level of Competition:
-        <select>
-          <option value="professional">Professional</option>
-          <option value="minor">Minor League</option>
-          <option value="college">College</option>
-          <option value="highSchool">High School</option>
-          <option value="littleLeague">Little League</option>
+        <select ng-model="teamLevel">
+          <option value="1">Professional</option>
+          <option value="2">Minor League</option>
+          <option value="3">College</option>
+          <option value="4">High School</option>
+          <option value="5">Little League</option>
         </select>
       </label>
     </div>
@@ -39,7 +39,7 @@
     <div class="medium-6 columns">
       <label>
         Location(State):
-        <input type="text" list="states" name="name" value="" placeholder="begin typing your state">
+        <input type="text" list="states" name="name" value="" placeholder="begin typing your state" ng-model="teamLocation">
         <datalist id="states">
           <option value="Alabama">
             <option value="Alaska">
@@ -98,7 +98,7 @@
   </div>
   <div class="row">
     <div class="medium-6 columns">
-      <button type="submit" class="expanded button" name="button">Add Players to Your Team<i class="icon ion-chevron-right right"></i></button>
+      <button type="submit" ng-click="submit()" class="expanded button success" name="button">Finished?<i class="icon ion-chevron-right right"></i></button>
     </div>
   </div>
 </form>

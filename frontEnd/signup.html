@@ -1,0 +1,39 @@
+<form method="post" novalidate class="add-team-form">
+  <div class="row">
+    <div class="medium-6 columns">
+      <label>
+        Pick Your Username:
+        <input type="text" placeholder="enter username here" ng-model="userName"></input>
+      </label>
+    </div>
+  </div>
+  <div class="row">
+    <div class="medium-6 columns">
+      <label>
+        Pick Your Password:
+        <input type="password" placeholder="enter password here" ng-model="password"></input>
+      </label>
+    </div>
+  </div>
+  <div class="row">
+    <div class="medium-6 columns">
+      <label>
+        Confirm Your Password:
+        <input type="password" placeholder="enter password here" ng-model="confirmPassword"></input>
+      </label>
+    </div>
+  </div>
+  <div class="row">
+    <div class="medium-6 columns">
+      <label>
+        Email Address:
+        <input type="email" placeholder="enter your email here" ng-model="email"></input>
+      </label>
+    </div>
+  </div>
+  <div class="row">
+    <div class="medium-6 columns">
+      <button type="submit" ng-click="createAccount()" class="expanded button success" name="button">Create Account<i class="icon ion-chevron-right right"></i></button>
+    </div>
+  </div>
+</form>

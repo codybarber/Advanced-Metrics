@@ -1,0 +1,23 @@
+<form method="post" novalidate class="add-team-form">
+  <div class="row">
+    <div class="medium-6 columns">
+      <label>
+        Username:
+        <input type="text" placeholder="enter username here" ng-model="username"></input>
+      </label>
+    </div>
+  </div>
+  <div class="row">
+    <div class="medium-6 columns">
+      <label>
+        Password:
+        <input type="password" placeholder="enter password here" ng-model="password"></input>
+      </label>
+    </div>
+  </div>
+  <div class="row">
+    <div class="medium-6 columns">
+      <button type="submit" ng-click="login()" class="expanded button success" name="button">Log In!<i class="icon ion-chevron-right right"></i></button>
+    </div>
+  </div>
+</form>
