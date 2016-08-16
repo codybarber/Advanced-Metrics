@@ -1,12 +1,5 @@
 var app = angular.module('statApp', ['ngRoute', 'ngCookies']);
 
-var team = {
-  "name": null,
-  "sport": null,
-  "location": null,
-  "level": null
-};
-
 var teamList;
 app.config(function($routeProvider) {
   $routeProvider
@@ -140,7 +133,7 @@ app.controller('SignupController', function($scope, $http, $location) {
   };
 });
 
-app.controller('LoginController', function($scope, $http, $location) {
+app.controller('LoginController', function($scope, $http, $location, $cookies) {
 
   $scope.login = function() {
     $http({
@@ -151,23 +144,41 @@ app.controller('LoginController', function($scope, $http, $location) {
         password: $scope.password
       }
     })
-    .success(function(data) {
+    .success(function(data2) {
       console.log("Successfully signed in");
-      $scope.username = data;
+      // $scope.username = data2;
+      $location.path('/dashboard');
+      console.log(data2);
+      // debugger
+      $cookies.put('auth_token', data2.auth_token);
+      $cookies.put('user_id', data2.id);
     })
     .catch(function(error) {
       console.log(error.message);
     });
-    $location.path('/dashboard');
   };
 });
 
-app.controller('DashboardController', function($scope, $http, $location) {
-
+app.controller('DashboardController', function($scope, $http, $location, $cookies) {
+  var statter = $cookies.get('user_id');
+  $http({
+    url: API + '/get-teams',
+    method: 'POST',
+    data: {
+      statter: statter
+    }
+  })
+  .success(function(data) {
+    $scope.teams = data;
+    console.log($scope.teams);
+  })
+  .catch(function(error) {
+    console.log(error.message);
+  });
 });
 
-app.controller('AddTeamController', function($scope, $http, $location) {
-
+app.controller('AddTeamController', function($scope, $http, $location, $cookies) {
+  var statter = $cookies.get('user_id');
   $scope.submit = function() {
     $http({
       url: API + '/add-new-team',
@@ -176,7 +187,8 @@ app.controller('AddTeamController', function($scope, $http, $location) {
         name: $scope.teamName,
         level: $scope.teamLevel,
         location: $scope.teamLocation,
-        sport: $scope.teamSport
+        sport: $scope.teamSport,
+        statter: statter
       }
     })
     .success(function(data) {
@@ -208,6 +220,9 @@ app.controller('AddTeamController', function($scope, $http, $location) {
       console.log('success');
       $scope.playerList.push(data);
       console.log($scope.playerList);
+      $('#playerForm').each(function(){
+        this.reset();
+      });
     })
     .catch(function(error) {
       console.log(error);
