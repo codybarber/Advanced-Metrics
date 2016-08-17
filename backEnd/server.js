@@ -10,6 +10,33 @@ var db = pgp('postgres://localhost:5432/baseball_db');
 
 app.use(bodyParser.json());
 
+app.post('/player-info/:playerId', function(request, response) {
+  console.log(request.params.playerId);
+  db.any('SELECT * FROM players WHERE id=$1', [request.params.playerId])
+  .then(function(data) {
+    console.log("GOT PLAYER DATA");
+    console.log("PLAYER: ",data);
+    response.send(data);
+  })
+  .catch(function(error) {
+    console.log(error.message);
+  });
+});
+
+app.post('/team-roster/:teamId', function(request, response) {
+  console.log(request.params.teamId);
+  db.any('SELECT * FROM players WHERE team_id=$1', [request.params.teamId])
+  .then(function(data) {
+    console.log("GOT ROSTERS");
+    console.log("ROSTERS: ",data);
+    response.send(data);
+  })
+  .catch(function(error) {
+    console.log(error.message);
+  });
+});
+
+
 app.post('/sign-in', function(request, response) {
 
   var uid = '';
@@ -79,7 +106,7 @@ app.post('/add-new-team', function(request, response) {
 });
 
 app.post('/get-teams', function(request, response) {
-  db.any('SELECT id, team_name FROM teams WHERE statter_id = $1', [request.body.statter])
+  db.any('SELECT * FROM teams WHERE statter_id = $1', [request.body.statter])
     .then(function(data) {
       console.log(data);
       response.send(data);

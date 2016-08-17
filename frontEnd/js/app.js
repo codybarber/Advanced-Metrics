@@ -20,6 +20,14 @@ app.config(function($routeProvider) {
     templateUrl: '/dashboard.html',
     controller: 'DashboardController'
   })
+  .when('/dashboard/:teamId', {
+    templateUrl: 'roster.html',
+    controller: 'RosterController'
+  })
+  .when('/player-info/:playerId', {
+    templateUrl: 'player.html',
+    controller: 'PlayerController'
+  })
   .when('/add-team', {
     templateUrl: '/add-team.html',
     controller: 'AddTeamController'
@@ -170,7 +178,49 @@ app.controller('DashboardController', function($scope, $http, $location, $cookie
   })
   .success(function(data) {
     $scope.teams = data;
-    console.log($scope.teams);
+    // console.log($scope.teams);
+  })
+  .catch(function(error) {
+    console.log(error.message);
+  });
+
+  $scope.goToTeam = function(teamId) {
+    $cookies.put('team_id', teamId);
+    $location.path('/dashboard/:' + teamId);
+  };
+});
+
+app.controller('RosterController', function($scope, $location, $http, $cookies) {
+  var team = $cookies.get('team_id');
+  $http({
+    url: API + '/team-roster/' + team,
+    method: 'POST'
+  })
+  .success(function(data) {
+    $scope.teamRoster = data;
+    console.log($scope.teamRoster);
+  })
+  .catch(function(error) {
+    console.log(error.message);
+  });
+
+  $scope.goToPlayer = function(playerId) {
+    $cookies.put('player_id', playerId);
+    $location.path('/player-info/:' + playerId);
+  };
+
+});
+
+app.controller('PlayerController', function($scope, $location, $http, $cookies) {
+  var player = $cookies.get('player_id');
+  console.log(player);
+  $http({
+    url: API + '/player-info/' + player,
+    method: 'POST'
+  })
+  .success(function(data) {
+    $scope.playerInfo = data[0];
+    console.log($scope.playerInfo);
   })
   .catch(function(error) {
     console.log(error.message);
@@ -233,28 +283,8 @@ app.controller('AddTeamController', function($scope, $http, $location, $cookies)
   $scope.finished = function() {
     $location.path('/team-roster');
   };
-
-
-
 });
 
-app.controller('RosterController', function($scope, $http, $location) {
-  $http({
-    url: API + '/get-roster',
-    method: 'POST',
-    data: {
-      team: teamId
-    }
-  })
-  .success(function(data) {
-    console.log('success');
-    $scope.roster = data;
-    console.log($scope.roster);
-  })
-  .catch(function(error) {
-    console.log(error);
-  });
-});
 
 app.controller('StatEntryController', function($scope, $http, $location) {
 

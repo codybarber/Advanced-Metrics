@@ -1,5 +1,28 @@
 <div class="row">
-    <div>
-      <li ng-repeat="team in teams">{{team.team_name}}</li>
+  <div class="medium-6 columns">
+    <table class="teamTable">
+      <thead>
+        <tr>
+          <th data-type="text">Team Name</th>
+          <th data-breakpoints="xs sm" data-type="text">Location</th>
+          <th data-breakpoints="xs sm" data-type="text">Level</th>
+          <th data-breakpoints="xs sm" data-type="text">Sport</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="team in teams" ng-click="goToTeam(team.id)" class="tableRows">
+          <td>{{team.team_name}}</td>
+          <td >{{team.location}}</td>
+          <td>{{team.level}}</td>
+          <td>{{team.sport}}</td>
+        </tr>
+      </tbody>
+    </table>
+    <script>
+    jQuery(function($) {
+      $('.teamTable').footable();
+    });
+    </script>
+
   </div>
 </div>

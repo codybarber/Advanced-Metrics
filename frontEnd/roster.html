@@ -1,0 +1,25 @@
+<div class="row">
+  <div class="medium-6 columns">
+    <table class="rosterTable">
+      <thead>
+        <tr>
+          <th data-breakpoints="xs">Number</th>
+          <th>Name</th>
+          <th data-breakpoints="xs">Age</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="player in teamRoster" ng-click="goToPlayer(player.id)" class="tableRows">
+          <td>{{player.number}}</td>
+          <td>{{player.player_name}}</td>
+          <td>{{player.age}}</td>
+        </tr>
+      </tbody>
+    </table>
+    <script>
+    jQuery(function($) {
+      $('.rosterTable').footable();
+    });
+    </script>
+  </div>
+</div>
