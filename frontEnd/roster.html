@@ -1,8 +1,23 @@
 <div class="row">
+  logo
+</div>
+<div class="row">
   <div class="medium-6 columns">
+    <span>Team Dashboard</span>
+  </div>
+  <div class="medium-6 columns">
+    <a href="#/add-player"><button type="button" name="button" ng-click="">Add A Player</button></a>
+    <a href="#/add-game-stats"><button type="button" name="button" ng-click="">Add Individual Game Stats</button></a>
+  </div>
+</div>
+<div class="row">
+  <div class="">
     <table class="rosterTable">
       <thead>
         <tr>
+          <col width="20%">
+          <col width="60%">
+          <col width="20%">
           <th data-breakpoints="xs">Number</th>
           <th>Name</th>
           <th data-breakpoints="xs">Age</th>
@@ -16,10 +31,11 @@
         </tr>
       </tbody>
     </table>
-    <script>
-    jQuery(function($) {
-      $('.rosterTable').footable();
-    });
-    </script>
   </div>
 </div>
+
+<script>
+jQuery(function($) {
+  $('.rosterTable').footable();
+});
+</script>

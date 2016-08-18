@@ -72,8 +72,50 @@ app.post('/create-account', function(request, response) {
   });
 });
 
+app.post('/add-batting-stats', function(request, response) {
+  console.log(request.body);
+  db.any(
+    `INSERT INTO
+    batting("G", "AB", "R", "H", "singles", "doubles", "triples", "HR", "RBI", "BB", "SO", "ground_balls", "fly_balls", "line_drives", "HBP", "IBB", "SB", "CS", "sacrifices", player_id)
+    VALUES
+    (1, $(AB), $(R), $(H), $(singles), $(doubles), $(triples), $(HR), $(RBI), $(BB), $(SO), $(ground_balls), $(fly_balls), $(line_drives), $(HBP), $(IBB), $(SB), $(CS), $(sacrifices), $(id))
+    ON CONFLICT
+    (player_id)
+    DO UPDATE SET
+    "G" = coalesce(batting."G", 0) + EXCLUDED."G",
+    "AB" = coalesce(batting."AB", 0) + EXCLUDED."AB",
+    "R" = coalesce(batting."R", 0) + EXCLUDED."R",
+    "H" = coalesce(batting."H", 0) + EXCLUDED."H",
+    "singles" = coalesce(batting."singles", 0) + EXCLUDED."singles",
+    "doubles" = coalesce(batting."doubles", 0) + EXCLUDED."doubles",
+    "triples" = coalesce(batting."triples", 0) + EXCLUDED."triples",
+    "HR" = coalesce(batting."HR", 0) + EXCLUDED."HR",
+    "RBI" = coalesce(batting."RBI", 0) + EXCLUDED."RBI",
+    "BB" = coalesce(batting."BB", 0) + EXCLUDED."BB",
+    "SO" = coalesce(batting."SO", 0) + EXCLUDED."SO",
+    "ground_balls" = coalesce(batting."ground_balls", 0) + EXCLUDED."ground_balls",
+    "fly_balls" = coalesce(batting."fly_balls", 0) + EXCLUDED."fly_balls",
+    "line_drives" = coalesce(batting."line_drives", 0) + EXCLUDED."line_drives",
+    "HBP" = coalesce(batting."HBP", 0) + EXCLUDED."HBP",
+    "IBB" = coalesce(batting."IBB", 0) + EXCLUDED."IBB",
+    "SB" = coalesce(batting."SB", 0) + EXCLUDED."SB",
+    "CS" = coalesce(batting."CS", 0) + EXCLUDED."CS",
+    "sacrifices" = coalesce(batting."sacrifices", 0) + EXCLUDED."sacrifices"`, request.body)
+  .then(function(data) {
+    console.log(data);
+    console.log("SSUUCCCCEESSSS");
+  })
+  .catch(function(error) {
+    console.log("ERROR: ",error);
+  });
+});
+
+app.post('/calc-batting-stats', function(request, response) {
+  db.any('SELECT * FROM batting ')
+});
+
 app.post('/get-roster', function(request, response) {
-  db.any('SELECT id, player_name, number, age from players WHERE team_id=$1', [request.body.team])
+  db.any('SELECT * FROM players WHERE team_id=$1', [request.body.team])
   .then(function(data) {
     console.log(data);
     response.send(data);

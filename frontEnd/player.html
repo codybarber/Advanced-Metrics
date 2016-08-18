@@ -1,7 +1,152 @@
 <div class="row">
-  <div>
-    {{playerInfo.player_name}}
-    {{playerInfo.age}}
-    {{playerInfo.number}}
+  <label for="">Batting</label>
+  <div class="">
+    <table class="playerTable">
+      <thead>
+        <tr>
+          <!-- <col width="20%">
+          <col width="60%">
+          <col width="20%"> -->
+          <th>G</th>
+          <th>AB</th>
+          <th>PA</th>
+          <th>H</th>
+          <th>R</th>
+          <th>BA</th>
+          <th>RBI</th>
+          <th>OBP</th>
+          <th>SLG</th>
+          <th>2B</th>
+          <th>3B</th>
+          <th>HR</th>
+          <th>BB</th>
+          <th>SB</th>
+          <th>CS</th>
+          <th>SO</th>
+          <th>OPS</th>
+          <th>SF</th>
+          <th>HBP</th>
+          <th>BABIP</th>
+          <th>BB%</th>
+          <th>SO%</th>
+          <th>ISO</th>
+          <th>RC</th>
+          <th>wOBA</th>
+          <th>wRAA</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="battingStat in playerBatterStats" class="tableRows">
+          <td>{{G}}</td>
+          <td>{{AB}}</td>
+          <td>{{PA}}</td>
+          <td>{{H}}</td>
+          <td>{{R}}</td>
+          <td>{{BA}}</td>
+          <td>{{RBI}}</td>
+          <td>{{OBP}}</td>
+          <td>{{SLG}}</td>
+          <td>{{2B}}</td>
+          <td>{{3B}}</td>
+          <td>{{HR}}</td>
+          <td>{{BB}}</td>
+          <td>{{SB}}</td>
+          <td>{{CS}}</td>
+          <td>{{SO}}</td>
+          <td>{{OPS}}</td>
+          <td>{{SF}}</td>
+          <td>{{HBP}}</td>
+          <td>{{BABIP}}</td>
+          <td>{{BB%}}</td>
+          <td>{{SO%}}</td>
+          <td>{{ISO}}</td>
+          <td>{{RC}}</td>
+          <td>{{wOBA}}</td>
+          <td>{{wRAA}}</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </div>
+<div class="row">
+  <label for="">Pitching</label>
+  <div class="">
+    <table class="playerTable">
+      <thead>
+        <tr>
+          <!-- <col width="20%">
+          <col width="60%">
+          <col width="20%"> -->
+          <th>G</th>
+          <th>W</th>
+          <th>L</th>
+          <th>IP</th>
+          <th>ERA</th>
+          <th>R</th>
+          <th>ER</th>
+          <th>H</th>
+          <th>SO</th>
+          <th>HR</th>
+          <th>BB</th>
+          <th>WHIP</th>
+          <th>BF</th>
+          <th>S</th>
+          <th>CG</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="pitchingStat in playerPitchingStats" class="tableRows">
+          <td>{{G}}</td>
+          <td>{{W}}</td>
+          <td>{{L}}</td>
+          <td>{{IP}}</td>
+          <td>{{ERA}}</td>
+          <td>{{R}}</td>
+          <td>{{ER}}</td>
+          <td>{{H}}</td>
+          <td>{{SO}}</td>
+          <td>{{HR}}</td>
+          <td>{{BB}}</td>
+          <td>{{WHIP}}</td>
+          <td>{{BF}}</td>
+          <td>{{S}}</td>
+          <td>{{CG}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="row">
+  <label for="">Defense</label>
+  <div class="">
+    <table class="playerTable">
+      <thead>
+        <tr>
+          <!-- <col width="20%">
+          <col width="60%">
+          <col width="20%"> -->
+          <th>G</th>
+          <th>Fielding %</th>
+          <th>A</th>
+          <th>PO</th>
+          <th>E</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="defenseStat in playerDefenseStats" class="tableRows">
+          <td>{{G}}</td>
+          <td>{{Fielding %}}</td>
+          <td>{{A}}</td>
+          <td>{{PO}}</td>
+          <td>{{E}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+jQuery(function($) {
+  $('.playerTable').footable();
+});
+</script>

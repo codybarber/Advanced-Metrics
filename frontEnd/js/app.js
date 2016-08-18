@@ -40,9 +40,17 @@ app.config(function($routeProvider) {
     templateUrl: '/team-roster.html',
     controller: 'RosterController'
   })
-  .when('/add-game-stats', {
-    templateUrl: '/add-game-stats.html',
-    controller: 'AddTeamController'
+  .when('/add-batting-stats', {
+    templateUrl: '/add-batting-stats.html',
+    controller: 'StatEntryController'
+  })
+  .when('/add-pitching-stats', {
+    templateUrl: '/add-pitching-stats.html',
+    controller: 'StatEntryController'
+  })
+  .when('/add-defense-stats', {
+    templateUrl: '/add-defense-stats.html',
+    controller: 'StatEntryController'
   })
   .when('/stat-entry', {
     templateUrl: '/stat-entry.html',
@@ -228,7 +236,6 @@ app.controller('PlayerController', function($scope, $location, $http, $cookies) 
 });
 
 app.controller('AddTeamController', function($scope, $http, $location, $cookies) {
-  var statter = $cookies.get('user_id');
   $scope.submit = function() {
     $http({
       url: API + '/add-new-team',
@@ -238,13 +245,14 @@ app.controller('AddTeamController', function($scope, $http, $location, $cookies)
         level: $scope.teamLevel,
         location: $scope.teamLocation,
         sport: $scope.teamSport,
-        statter: statter
+        statter: $cookies.get('user_id')
       }
     })
     .success(function(data) {
       $scope.teamInfo = data;
       console.log('client side: ', $scope.teamInfo);
       teamId = $scope.teamInfo.id;
+      $cookies.put('team_id', teamId);
     })
     .catch(function(error) {
       console.log(error.message);
@@ -263,7 +271,7 @@ app.controller('AddTeamController', function($scope, $http, $location, $cookies)
         name: $scope.playerName,
         age: $scope.playerAge,
         number: $scope.playerNumber,
-        team: teamId
+        team: $cookies.get('team_id')
       }
     })
     .success(function(data) {
@@ -281,13 +289,93 @@ app.controller('AddTeamController', function($scope, $http, $location, $cookies)
   };
 
   $scope.finished = function() {
-    $location.path('/team-roster');
+    $location.path('/dashboard');
   };
 });
 
 
-app.controller('StatEntryController', function($scope, $http, $location) {
+app.controller('StatEntryController', function($scope, $http, $location, $cookies) {
 
+  var teamId = $cookies.get('team_id');
+  $http({
+    url: API + '/get-roster',
+    method: 'POST',
+    data: {
+      team: teamId
+    }
+  })
+  .success(function(data) {
+    $scope.teamRoster = data;
+    console.log("Team Roster: ",$scope.teamRoster);
+  })
+  .catch(function(error) {
+    console.log(error.message);
+  });
+
+  $scope.showForm = function(player) {
+    if (!player.editing) {
+      player.editing = true;
+    } else {
+      player.editing = false;
+    }
+  };
+
+  $scope.submitBattingStats = function(player) {
+    console.log(player.AB);
+    $http({
+      url: API + '/add-batting-stats',
+      method: 'POST',
+      data: player
+    })
+    .success(function(data) {
+      console.log(data);
+    })
+    .catch(function(error) {
+      console.log(error.message);
+    });
+  };
+
+  $scope.calcBattingStats = function() {
+    $http({
+      url: API + '/calc-batting-stats',
+      method: 'POST'
+    })
+    .success(function(data) {
+      console.log(data);
+    })
+    .catch(function(error) {
+      console.log(error.message);
+    });
+    $location.path('/add-pitching-stats');
+  };
+
+  $scope.calcPitchingStats = function() {
+    $http({
+      url: API + '/calc-pitching-stats',
+      method: 'POST'
+    })
+    .success(function(data) {
+      console.log(data);
+    })
+    .catch(function(error) {
+      console.log(error.message);
+    });
+    $location.path('/add-defense-stats');
+  };
+
+  $scope.calcDefenseStats = function() {
+    $http({
+      url: API + '/calc-defense-stats',
+      method: 'POST'
+    })
+    .success(function(data) {
+      console.log(data);
+    })
+    .catch(function(error) {
+      console.log(error.message);
+    });
+    $location.path('/team-roster');
+  };
 });
 
 app.controller('StatDisplayController', function($scope, $http, $location) {
