@@ -18,6 +18,8 @@ var cn = {
 
 var db = pgp(cn);
 
+var port = process.env.PORT || 8000;
+
 
 app.use(bodyParser.json());
 app.use(cors());
@@ -353,6 +355,6 @@ app.post('/add-new-player', function(request, response) {
   });
 });
 
-app.listen(8000, function() {
-  console.log('listening on port 8000');
+app.listen(port, function() {
+  console.log('listening on port ' + port + '.');
 });
