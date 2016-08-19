@@ -5,11 +5,7 @@ app.config(function($routeProvider) {
   $routeProvider
   .when('/', {
     templateUrl: '/login.html',
-      controller: 'LoginController'
-  })
-  .when('/', {
-    templateUrl: '/login.html',
-      controller: 'MainController'
+    controller: 'LoginController'
   })
   .when('/signup', {
     templateUrl: '/signup.html',
@@ -69,7 +65,7 @@ app.config(function($routeProvider) {
   });
 });
 
-var API = 'http://localhost:8000';
+var API = 'https://shrouded-headland-15271.herokuapp.com/';
 
 app.factory('Pitching', function($http) {
   var pitch = {};
