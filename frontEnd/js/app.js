@@ -65,7 +65,7 @@ app.config(function($routeProvider) {
   });
 });
 
-var API = 'http://localhost:8000';
+var API = '';
 
 app.factory('Pitching', function($http) {
   var pitch = {};
