@@ -8,5 +8,8 @@
     "start": "node server.js"
   },
   "author": "Cody Barber",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^2.0.0"
+  }
 }

@@ -5,10 +5,22 @@ var bcrypt = require('my-bcrypt');
 var bodyParser = require('body-parser');
 var cors = require('cors');
 var randomtoken = require('rand-token');
+require('dotenv').config();
 
-var db = pgp('postgres://localhost:5432/baseball_db');
+var cn = {
+  host: process.env.DB_HOST,
+  port: 5432,
+  database: process.env.DB_NAME,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASS,
+  ssl: true
+};
+
+var db = pgp(cn);
+
 
 app.use(bodyParser.json());
+app.use(cors());
 
 app.post('/player-info/:playerId', function(request, response) {
   console.log(request.params.playerId);
@@ -66,6 +78,7 @@ app.post('/sign-in', function(request, response) {
   var uid = '';
   var token = '';
 
+  console.log('jfksdlf', request.body);
   db.one('SELECT id, username, password FROM statters WHERE username = $1 and password = $2', [request.body.username, request.body.password])
   .then(function(data) {
     console.log('User Found. Signing In!');
