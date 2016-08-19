@@ -45,6 +45,7 @@ table {
 
 body {
   background-image: url(crossword.png);
+  font-family: 'Jaldi', sans-serif;
 }
 
 .rosterButtons {
