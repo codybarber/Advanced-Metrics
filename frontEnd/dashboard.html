@@ -1,43 +1,35 @@
-<div class="row">
-  logo
-</div>
-<div class="row">
-  <div class="medium-6 columns">
-    <span>Your Dashboard</span>
+<div class="container-fluid">
+  <div class="row dashboard">
+    <div class="col-md-4">
+      <span class="dashboardText">Your Dashboard</span>
+    </div>
+    <div class="col-md-4"></div>
+    <div class="col-md-4 rosterButtons">
+      <a href="#/add-team"><button type="button" name="button" class="btn btn-default">Add Team</button></a>
+    </div>
   </div>
-  <div class="medium-6 columns">
-    <a href="#/add-team"><button type="button" name="button" ng-click="">Add Team!</button></a>
-  </div>
-</div>
-<div class="row">
-  <div class="">
-    <table class="teamTable">
-      <thead class="tableHeaders">
-        <tr>
-          <col width="40%">
-          <col width="20%">
-          <col width="20%">
-          <col width="20%">
-          <th data-type="text">Team Name</th>
-          <th data-breakpoints="xs sm" data-type="text">Location</th>
-          <th data-breakpoints="xs sm" data-type="text">Level</th>
-          <th data-breakpoints="xs sm" data-type="text">Sport</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr ng-repeat="team in teams" ng-click="goToTeam(team.id)" class="tableRows">
-          <td>{{team.team_name}}</td>
-          <td>{{team.location}}</td>
-          <td>{{team.level}}</td>
-          <td>{{team.sport}}</td>
-        </tr>
-      </tbody>
-    </table>
+  <div class="row">
+      <table class="table table-bordered table-hover">
+        <thead class="tableHeaders">
+          <tr>
+            <col width="40%">
+            <col width="20%">
+            <col width="20%">
+            <col width="20%">
+            <th data-type="text">Team Name</th>
+            <th data-breakpoints="xs sm" data-type="text">Location</th>
+            <th data-breakpoints="xs sm" data-type="text">Level</th>
+            <th data-breakpoints="xs sm" data-type="text">Sport</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="team in teams" ng-click="goToTeam(team.id)" class="tableRows">
+            <td>{{team.team_name}}</td>
+            <td>{{team.location}}</td>
+            <td>{{team.level}}</td>
+            <td>{{team.sport}}</td>
+          </tr>
+        </tbody>
+      </table>
   </div>
 </div>
-
-<script>
-jQuery(function($) {
-  $('.teamTable').footable();
-});
-</script>

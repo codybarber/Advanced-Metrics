@@ -1,7 +1,9 @@
-<div class="row">
-  <label for="">Batting</label>
-  <div class="">
-    <table class="playerTable">
+<span class="playerName">{{stats.player_name}}&nbsp;&nbsp;&nbsp;#{{stats.number}}</span>
+<br><br>
+<div class="container-fluid">
+  <div class="row">
+    <span class="playerStatHeaderText">Batting Statistics</span>
+    <table class="table table-bordered table-hover">
       <thead>
         <tr>
           <!-- <col width="20%">
@@ -23,6 +25,34 @@
           <th>SB</th>
           <th>CS</th>
           <th>SO</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="tableRows">
+          <td>{{stats.G}}</td>
+          <td>{{stats.AB}}</td>
+          <td>{{stats.PA}}</td>
+          <td>{{stats.H}}</td>
+          <td>{{stats.R}}</td>
+          <td>{{stats.BA}}</td>
+          <td>{{stats.RBI}}</td>
+          <td>{{stats.OBP}}</td>
+          <td>{{stats.SLG}}</td>
+          <td>{{stats.doubles}}</td>
+          <td>{{stats.triples}}</td>
+          <td>{{stats.HR}}</td>
+          <td>{{stats.BB}}</td>
+          <td>{{stats.SB}}</td>
+          <td>{{stats.CS}}</td>
+          <td>{{stats.SO}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="row">
+    <table class="table table-bordered table-hover">
+      <thead>
+        <tr>
           <th>OPS</th>
           <th>SF</th>
           <th>HBP</th>
@@ -36,42 +66,24 @@
         </tr>
       </thead>
       <tbody>
-        <tr ng-repeat="battingStat in playerBatterStats" class="tableRows">
-          <td>{{G}}</td>
-          <td>{{AB}}</td>
-          <td>{{PA}}</td>
-          <td>{{H}}</td>
-          <td>{{R}}</td>
-          <td>{{BA}}</td>
-          <td>{{RBI}}</td>
-          <td>{{OBP}}</td>
-          <td>{{SLG}}</td>
-          <td>{{2B}}</td>
-          <td>{{3B}}</td>
-          <td>{{HR}}</td>
-          <td>{{BB}}</td>
-          <td>{{SB}}</td>
-          <td>{{CS}}</td>
-          <td>{{SO}}</td>
-          <td>{{OPS}}</td>
-          <td>{{SF}}</td>
-          <td>{{HBP}}</td>
-          <td>{{BABIP}}</td>
-          <td>{{BB%}}</td>
-          <td>{{SO%}}</td>
-          <td>{{ISO}}</td>
-          <td>{{RC}}</td>
-          <td>{{wOBA}}</td>
-          <td>{{wRAA}}</td>
+        <tr>
+          <td>{{stats.OPS}}</td>
+          <td>{{stats.sacrifices}}</td>
+          <td>{{stats.HBP}}</td>
+          <td>{{stats.BABIP}}</td>
+          <td>{{stats.BBperc}}</td>
+          <td>{{stats.SOperc}}</td>
+          <td>{{stats.ISO}}</td>
+          <td>{{stats.RC}}</td>
+          <td>{{stats.wOBA}}</td>
+          <td>{{stats.wRAA}}</td>
         </tr>
       </tbody>
     </table>
   </div>
-</div>
-<div class="row">
-  <label for="">Pitching</label>
-  <div class="">
-    <table class="playerTable">
+  <div class="row">
+    <span class="playerStatHeaderText">Pitching Statistics</span>
+    <table class="table table-bordered table-hover">
       <thead>
         <tr>
           <!-- <col width="20%">
@@ -92,34 +104,36 @@
           <th>BF</th>
           <th>S</th>
           <th>CG</th>
+          <th>BIP</th>
+          <th>GB%</th>
         </tr>
       </thead>
       <tbody>
-        <tr ng-repeat="pitchingStat in playerPitchingStats" class="tableRows">
-          <td>{{G}}</td>
-          <td>{{W}}</td>
-          <td>{{L}}</td>
-          <td>{{IP}}</td>
-          <td>{{ERA}}</td>
-          <td>{{R}}</td>
-          <td>{{ER}}</td>
-          <td>{{H}}</td>
-          <td>{{SO}}</td>
-          <td>{{HR}}</td>
-          <td>{{BB}}</td>
-          <td>{{WHIP}}</td>
-          <td>{{BF}}</td>
-          <td>{{S}}</td>
-          <td>{{CG}}</td>
+        <tr class="tableRows">
+          <td>{{stats.G_pitched}}</td>
+          <td>{{stats.W}}</td>
+          <td>{{stats.L}}</td>
+          <td>{{stats.IP}}</td>
+          <td>{{stats.ERA}}</td>
+          <td>{{stats.R_allowed}}</td>
+          <td>{{stats.ER}}</td>
+          <td>{{stats.H_allowed}}</td>
+          <td>{{stats.K_thrown}}</td>
+          <td>{{stats.HR_allowed}}</td>
+          <td>{{stats.BB_allowed}}</td>
+          <td>{{stats.WHIP}}</td>
+          <td>{{stats.BF}}</td>
+          <td>{{stats.S}}</td>
+          <td>{{stats.CG}}</td>
+          <td>{{stats.BIP}}</td>
+          <td>{{stats.GBperc}}</td>
         </tr>
       </tbody>
     </table>
   </div>
-</div>
-<div class="row">
-  <label for="">Defense</label>
-  <div class="">
-    <table class="playerTable">
+  <div class="row">
+    <span class="playerStatHeaderText">Defense Statistics</span>
+    <table class="table table-bordered table-hover">
       <thead>
         <tr>
           <!-- <col width="20%">
@@ -133,20 +147,14 @@
         </tr>
       </thead>
       <tbody>
-        <tr ng-repeat="defenseStat in playerDefenseStats" class="tableRows">
-          <td>{{G}}</td>
-          <td>{{Fielding %}}</td>
-          <td>{{A}}</td>
-          <td>{{PO}}</td>
-          <td>{{E}}</td>
+        <tr class="tableRows">
+          <td>{{stats.defenseG}}</td>
+          <td>{{stats.fielding_perc}}</td>
+          <td>{{stats.A}}</td>
+          <td>{{stats.PO}}</td>
+          <td>{{stats.E}}</td>
         </tr>
       </tbody>
     </table>
   </div>
 </div>
-
-<script>
-jQuery(function($) {
-  $('.playerTable').footable();
-});
-</script>

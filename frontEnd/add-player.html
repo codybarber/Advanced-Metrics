@@ -1,44 +1,38 @@
-<form method="post" id="playerForm" class="add-player-form" novalidate name="form">
-  <div class="row">
-    <div class="medium-6 columns">
-      <label>
-        Player Name:
-        <input type="text" placeholder="enter player name here" ng-model="playerName"></input>
-      </label>
-    </div>
-  </div>
-  <div class="row">
-    <div class="medium-6 columns">
-      <label>
-        Player Age:
-        <input type="number" name="age" placeholder="enter player's age here" ng-model="playerAge">
-      </label>
-    </div>
-  </div>
-  <div class="row">
-    <div class="medium-6 columns">
-      <label>
-        Number:
-        <input type="number" name="number" placeholder="enter player's number here" ng-model="playerNumber"></input>
-      </label>
-    </div>
-  </div>
-  <div class="row">
-    <div class="medium-6 columns">
-      <div class="medium-6 columns">
-        <button type="submit" class="expanded button" name="button" ng-click="submitPlayer()">Add Player<i class="icon ion-plus-round right"></i></button>
+<div class="container-fluid">
+  <div class="col-md-6 login">
+    <form>
+      <div class="form-group">
+        <label>Player Name</label>
+        <input type="text" class="form-control" placeholder="enter player's name here" ng-model="playerName">
       </div>
-      <div class="medium-6 columns">
-        <button type="submit" class="success expanded button" name="button" ng-click="finished()">Finished<i class="icon ion-checkmark-round right"></i></button>
+      <div class="form-group">
+        <label>Player Age</label>
+        <input type="text" class="form-control" placeholder="enter player's age here" ng-model="playerAge">
       </div>
-    </div>
+      <div class="form-group">
+        <label>Number</label>
+        <input type="text" class="form-control" placeholder="enter player's number here" ng-model="playerNumber">
+      </div>
+      <div class="row">
+        <button type="submit" class="btn btn-default" name="button" ng-click="submitPlayer()">Add This Player</button>
+      </div>
+    </form>
   </div>
-</form>
-<div class="row">
-  <div class="medium-6 columns">
-    <ul>
-      <li ng-repeat="player in playerList">{{player.number}}--{{player.player_name}}</li>
+  <div class="col-md-1"></div>
+  <div class="col-md-4 login">
+    <span class="dashboardText">Roster</span><br>
+    <span class="dashboardText">------------</span>
+    <ul class="liveRoster" style="list-style: none;">
+      <li ng-repeat="player in playerList">
+        <div class="col-md-6">
+          {{player.number}}
+        </div>
+        <div class="col-md-6">
+          {{player.player_name}}
+        </div>
+      </li>
     </ul>
+    <button type="submit" class="btn btn-default finishedButton" name="button" ng-click="finished()">Finished</button>
   </div>
-
+  <div class="col-md-1"></div>
 </div>

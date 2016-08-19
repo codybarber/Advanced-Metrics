@@ -1,113 +1,136 @@
-<div class="">
-  <ul>
-    <li ng-repeat="player in teamRoster">
-      <a href="">{{player.player_name}}</a><button ng-click="showForm(player)">Expand</button>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6 text-center statText">Offensive Stat Entry Dashboard</div>
+    <div class="col-md-3 text-right"></div>
+  </div>
+  <ul style="list-style: none;">
+    <li ng-repeat="player in teamRoster" class="rosterList">
+      <div class="row dashboardText playerNameText">
+        <div class="col-md-1">#{{player.number}}</div>
+        <div class="col-md-4">
+          <span>{{player.player_name}}</span>
+        </div>
+        <div class="col-md-6"></div>
+        <div class="col-md-1"><i class="icon ion-chevron-down"  ng-click="showForm(player)"></i></div>
+      </div>
       <div ng-show="player.editing" class="statForm">
         <form>
           <div class="row">
-            <div class="small-2 columns">
+            <div class="col-md-1"></div>
+            <div class="col-md-1">
               <label>AB
-                <input type="text" placeholder="enter stat" ng-model="player.AB" />
+                <input type="text" class="form-control"  placeholder="" ng-model="player.AB" />
               </label>
             </div>
-            <div class="small-2 columns">
+            <div class="col-md-1">
               <label>H
-                <input type="text" placeholder="enter stat" ng-model="player.H"/>
+                <input type="text" class="form-control"  placeholder="" ng-model="player.H"/>
               </label>
             </div>
-            <div class="small-2 columns">
+            <div class="col-md-1">
               <label>R
-                <input type="text" placeholder="enter stat" ng-model="player.R" />
+                <input type="text" class="form-control"  placeholder="" ng-model="player.R" />
               </label>
             </div>
-            <div class="small-2 columns">
+            <div class="col-md-1">
               <label>1B
-                <input type="text" placeholder="enter stat" ng-model="player.singles" />
+                <input type="text" class="form-control"  placeholder="" ng-model="player.singles" />
               </label>
             </div>
-            <div class="small-2 columns">
+            <div class="col-md-1">
               <label>2B
-                <input type="text" placeholder="enter stat" ng-model="player.doubles" />
+                <input type="text" class="form-control"  placeholder="" ng-model="player.doubles" />
               </label>
             </div>
-            <div class="small-2 columns">
+            <div class="col-md-1">
               <label>3B
-                <input type="text" placeholder="enter stat" ng-model="player.triples" />
+                <input type="text" class="form-control"  placeholder="" ng-model="player.triples" />
               </label>
             </div>
-          </div>
-          <div class="row">
-            <div class="small-2 columns">
+            <div class="col-md-1">
               <label>HR
-                <input type="text" placeholder="enter stat" ng-model="player.HR" />
+                <input type="text" class="form-control"  placeholder="" ng-model="player.HR" />
               </label>
             </div>
-            <div class="small-2 columns">
+            <div class="col-md-1">
               <label>RBI
-                <input type="text" placeholder="enter stat" ng-model="player.RBI" />
+                <input type="text" class="form-control"  placeholder="" ng-model="player.RBI" />
               </label>
             </div>
-            <div class="small-2 columns">
+            <div class="col-md-1">
               <label>BB
-                <input type="text" placeholder="enter stat" ng-model="player.BB" />
+                <input type="text" class="form-control"  placeholder="" ng-model="player.BB" />
               </label>
             </div>
-            <div class="small-2 columns">
+            <div class="col-md-1">
               <label>SO
-                <input type="text" placeholder="enter stat" ng-model="player.SO" />
+                <input type="text" class="form-control"  placeholder="" ng-model="player.SO" />
               </label>
             </div>
-            <div class="small-2 columns">
-              <label>Ground Balls
-                <input type="text" placeholder="enter stat" ng-model="player.ground_balls" />
-              </label>
-            </div>
-            <div class="small-2 columns">
-              <label>Fly Balls
-                <input type="text" placeholder="enter stat" ng-model="player.fly_balls" />
-              </label>
-            </div>
+            <div class="col-md-1"></div>
           </div>
           <div class="row">
-            <div class="small-2 columns">
-              <label>Line Drives
-                <input type="text" placeholder="enter stat" ng-model="player.line_drives" />
+            <div class="col-md-1"></div>
+            <div class="col-md-1"></div>
+            <div class="col-md-1">
+              <label>GB
+                <input type="text" class="form-control"  placeholder="" ng-model="player.ground_balls" />
               </label>
             </div>
-            <div class="small-2 columns">
+            <div class="col-md-1">
+              <label>FB
+                <input type="text" class="form-control"  placeholder="" ng-model="player.fly_balls" />
+              </label>
+            </div>
+            <div class="col-md-1">
+              <label>LD
+                <input type="text" class="form-control"  placeholder="" ng-model="player.line_drives" />
+              </label>
+            </div>
+            <div class="col-md-1">
               <label>HBP
-                <input type="text" placeholder="enter stat" ng-model="player.HBP" />
+                <input type="text" class="form-control"  placeholder="" ng-model="player.HBP" />
               </label>
             </div>
-            <div class="small-2 columns">
+            <div class="col-md-1">
               <label>IBB
-                <input type="text" placeholder="enter stat" ng-model="player.IBB" />
+                <input type="text" class="form-control"  placeholder="" ng-model="player.IBB" />
               </label>
             </div>
-            <div class="small-2 columns">
+            <div class="col-md-1">
               <label>SB
-                <input type="text" placeholder="enter stat" ng-model="player.SB" />
+                <input type="text" class="form-control"  placeholder="" ng-model="player.SB" />
               </label>
             </div>
-            <div class="small-2 columns">
+            <div class="col-md-1">
               <label>CS
-                <input type="text" placeholder="enter stat" ng-model="player.CS" />
+                <input type="text" class="form-control"  placeholder="" ng-model="player.CS" />
               </label>
             </div>
-            <div class="small-2 columns">
-              <label>Sacrifices
-                <input type="text" placeholder="enter stat" ng-model="player.sacrifices" />
+            <div class="col-md-1">
+              <label>SF/SB
+                <input type="text" class="form-control"  placeholder="" ng-model="player.sacrifices" />
               </label>
             </div>
+            <div class="col-md-1"></div>
           </div>
-          <button type="button" name="button" class="button success" ng-click="submitBattingStats(player)">Save Player Stats</button>
+          <div class="row">
+            <div class="col-md-4"></div>
+            <div class="col-md-4 text-center">
+              <button type="button" name="button" class="btn btn-default statButtons" ng-click="submitBattingStats(player)">Save Batter's Stats</button>
+            </div>
+            <div class="col-md-4"></div>
+          </div>
         </form>
       </div>
     </li>
   </ul>
 </div>
 <div class="row">
-  <div class="medium-12 columns">
-    <button type="button" name="button" class="button expanded" ng-click="calcBattingStats()">Add Pitching Stats</button>
+  <div class="col-md-3"></div>
+  <div class="col-md-6">
+    <button type="button" name="button" class="btn btn-default text-center btn-block" ng-click="goToPitching()">Add Pitching Stats</button>
   </div>
+  <div class="col-md-3"></div>
 </div>

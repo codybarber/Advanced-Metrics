@@ -12,10 +12,22 @@ app.use(bodyParser.json());
 
 app.post('/player-info/:playerId', function(request, response) {
   console.log(request.params.playerId);
-  db.any('SELECT * FROM players WHERE id=$1', [request.params.playerId])
+
+  db.any(
+    `SELECT
+    *
+    FROM
+    batting
+    LEFT OUTER JOIN
+    players on batting.player_id = players.id
+    LEFT OUTER JOIN
+    pitching on players.id = pitching.player_id
+    LEFT OUTER JOIN
+    defense on pitching.player_id = defense.player_id
+    WHERE
+    players.id = $1`, request.params.playerId)
   .then(function(data) {
-    console.log("GOT PLAYER DATA");
-    console.log("PLAYER: ",data);
+    console.log(data);
     response.send(data);
   })
   .catch(function(error) {
@@ -25,10 +37,22 @@ app.post('/player-info/:playerId', function(request, response) {
 
 app.post('/team-roster/:teamId', function(request, response) {
   console.log(request.params.teamId);
-  db.any('SELECT * FROM players WHERE team_id=$1', [request.params.teamId])
+  db.any(
+
+    `SELECT
+    *
+    FROM
+    batting
+    LEFT OUTER JOIN
+    players on batting.player_id = players.id
+    LEFT OUTER JOIN
+    pitching on players.id = pitching.player_id
+    LEFT OUTER JOIN
+    defense on pitching.player_id = defense.player_id
+    WHERE
+    team_id = $1`, request.params.teamId)
   .then(function(data) {
-    console.log("GOT ROSTERS");
-    console.log("ROSTERS: ",data);
+    console.log(data);
     response.send(data);
   })
   .catch(function(error) {
@@ -65,7 +89,7 @@ app.post('/sign-in', function(request, response) {
 app.post('/create-account', function(request, response) {
   db.one('INSERT INTO statters(username, password, email) VALUES($1, $2, $3) RETURNING id, username', [request.body.username, request.body.password, request.body.email])
   .then(function(data) {
-    reponse.send(data);
+    response.send(data);
   })
   .catch(function(error) {
     console.log("Account creation error: ", error.message);
@@ -73,7 +97,7 @@ app.post('/create-account', function(request, response) {
 });
 
 app.post('/add-batting-stats', function(request, response) {
-  console.log(request.body);
+  // console.log(request.body);
   db.any(
     `INSERT INTO
     batting("G", "AB", "R", "H", "singles", "doubles", "triples", "HR", "RBI", "BB", "SO", "ground_balls", "fly_balls", "line_drives", "HBP", "IBB", "SB", "CS", "sacrifices", player_id)
@@ -111,17 +135,160 @@ app.post('/add-batting-stats', function(request, response) {
 });
 
 app.post('/calc-batting-stats', function(request, response) {
-  db.any('SELECT * FROM batting ')
-});
-
-app.post('/get-roster', function(request, response) {
-  db.any('SELECT * FROM players WHERE team_id=$1', [request.body.team])
+  db.any(
+    `SELECT
+    *
+    FROM
+    batting
+    LEFT OUTER JOIN
+    players on batting.player_id = players.id
+    WHERE
+    players.team_id = $1
+    `, (request.body.team))
   .then(function(data) {
-    console.log(data);
+    console.log("BIG SELECTION: ",data);
     response.send(data);
   })
   .catch(function(error) {
-    console.log("Fetch roster error: ", error.message);
+    console.log(error.message);
+  });
+});
+
+app.post('/add-pitching-stats', function(request, response) {
+  console.log(request.body);
+  request.body.W = request.body.W || 0;
+  if (request.body.W === true) {
+    request.body.W = 1;
+  } else {
+    request.body.W = 0;
+  }
+  request.body.L = request.body.L || 0;
+  if (request.body.L === true) {
+    request.body.L = 1;
+  } else {
+    request.body.L = 0;
+  }
+  request.body.S = request.body.S || 0;
+  if (request.body.S === true) {
+    request.body.S = 1;
+  } else {
+    request.body.S = 0;
+  }
+  request.body.CG = request.body.CG || 0;
+  db.any(
+    `INSERT INTO
+    pitching("G", "W", "L", "CG", "S", "IP", "H", "R", "ER", "BB", "K", "BF", "HR", "ground_balls", "fly_balls", "line_drives", "run_support", player_id)
+    VALUES
+    (1, $(W), $(L), $(CG), $(S), $(IP), $(H), $(R), $(ER), $(BB), $(K), $(BF), $(HR), $(ground_balls), $(fly_balls), $(line_drives), $(run_support), $(id))
+    ON CONFLICT
+    (player_id)
+    DO UPDATE SET
+    "G" = coalesce(pitching."G", 0) + EXCLUDED."G",
+    "W" = coalesce(pitching."W", 0) + EXCLUDED."W",
+    "L" = coalesce(pitching."L", 0) + EXCLUDED."L",
+    "CG" = coalesce(pitching."CG", 0) + EXCLUDED."CG",
+    "S" = coalesce(pitching."S", 0) + EXCLUDED."S",
+    "IP" = coalesce(pitching."IP", 0) + EXCLUDED."IP",
+    "H" = coalesce(pitching."H", 0) + EXCLUDED."H",
+    "R" = coalesce(pitching."R", 0) + EXCLUDED."R",
+    "ER" = coalesce(pitching."ER", 0) + EXCLUDED."ER",
+    "BB" = coalesce(pitching."BB", 0) + EXCLUDED."BB",
+    "K" = coalesce(pitching."K", 0) + EXCLUDED."K",
+    "BF" = coalesce(pitching."BF", 0) + EXCLUDED."BF",
+    "HR" = coalesce(pitching."HR", 0) + EXCLUDED."HR",
+    "ground_balls" = coalesce(pitching."ground_balls", 0) + EXCLUDED."ground_balls",
+    "fly_balls" = coalesce(pitching."fly_balls", 0) + EXCLUDED."fly_balls",
+    "line_drives" = coalesce(pitching."line_drives", 0) + EXCLUDED."line_drives",
+    "run_support" = coalesce(pitching."run_support", 0) + EXCLUDED."run_support"`, request.body)
+  .then(function(data) {
+    console.log(data);
+    console.log("SSUUCCCCEESSSS");
+  })
+  .catch(function(error) {
+    console.log("ERROR: ",error);
+  });
+});
+
+app.post('/calc-pitching-stats', function(request, response) {
+  db.any(
+    `SELECT
+    *
+    FROM
+    pitching
+    LEFT OUTER JOIN
+    players on pitching.player_id = players.id
+    WHERE
+    players.team_id = $1
+    `, (request.body.team))
+  .then(function(data) {
+    console.log("BIG SELECTION: ",data);
+    response.send(data);
+  })
+  .catch(function(error) {
+    console.log(error.message);
+  });
+});
+
+app.post('/add-defense-stats', function(request, response) {
+  console.log(request.body);
+  db.any(
+    `INSERT INTO
+    defense("G", "A", "PO", "E", player_id)
+    VALUES
+    (1, $(A), $(PO), $(E), $(id))
+    ON CONFLICT
+    (player_id)
+    DO UPDATE SET
+    "G" = coalesce(defense."G", 0) + EXCLUDED."G",
+    "A" = coalesce(defense."A", 0) + EXCLUDED."A",
+    "PO" = coalesce(defense."PO", 0) + EXCLUDED."PO",
+    "E" = coalesce(defense."E", 0) + EXCLUDED."E"`, request.body)
+  .then(function(data) {
+    console.log(data);
+    console.log("SSUUCCCCEESSSS");
+  })
+  .catch(function(error) {
+    console.log("ERROR: ",error);
+  });
+});
+
+app.post('/calc-defense-stats', function(request, response) {
+  db.any(
+    `SELECT
+    *
+    FROM
+    defense
+    LEFT OUTER JOIN
+    players on defense.player_id = players.id
+    WHERE
+    players.team_id = $1
+    `, (request.body.team))
+  .then(function(data) {
+    console.log("BIG SELECTION: ",data);
+    response.send(data);
+  })
+  .catch(function(error) {
+    console.log(error.message);
+  });
+});
+
+app.post('/get-roster', function(request, response) {
+
+  db.any(
+    `SELECT
+    *
+    FROM
+    batting
+    LEFT OUTER JOIN
+    players on batting.player_id = players.id
+    WHERE
+    team_id = $1`, request.body.team)
+  .then(function(data) {
+    // console.log(data);
+    response.send(data);
+  })
+  .catch(function(error) {
+    console.log(error.message);
   });
 });
 
@@ -163,6 +330,10 @@ app.post('/add-new-player', function(request, response) {
   .then(function(data) {
     console.log('Success');
     response.send(data);
+    db.one('INSERT into batting(player_id) VALUES ($1)', data.id);
+    db.one('INSERT into pitching(player_id) VALUES ($1)', data.id);
+    db.one('INSERT into defense(player_id) VALUES ($1)', data.id);
+
   })
   .catch(function(error) {
     console.log("ADD PLAYER ERROR: ", error.message);

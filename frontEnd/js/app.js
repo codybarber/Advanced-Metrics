@@ -3,10 +3,13 @@ var app = angular.module('statApp', ['ngRoute', 'ngCookies']);
 var teamList;
 app.config(function($routeProvider) {
   $routeProvider
-
   .when('/', {
-    templateUrl: '/home.html',
-    controller: 'MainController'
+    templateUrl: '/login.html',
+      controller: 'LoginController'
+  })
+  .when('/', {
+    templateUrl: '/login.html',
+      controller: 'MainController'
   })
   .when('/signup', {
     templateUrl: '/signup.html',
@@ -68,58 +71,97 @@ app.config(function($routeProvider) {
 
 var API = 'http://localhost:8000';
 
-// app.factory('batting', function($http) {
-//   var hitting = {};
-//   hitting.battingAverage = function(atBats, hits) {
-//     var ba = hits / atBats;
-//     return ba;
-//   }
-//   hitting.walkPercentage = function(walks, plateAppearances) {
-//     var wp = walks / plateAppearances;
-//     return wp;
-//   }
-//   hitting.strikeoutPercentage = function(strikeouts, plateAppearances) {
-//     var sop = strikeouts / plateAppearances;
-//     return sop;
-//   }
-//   hitting.sluggingPercentage = function(totalBases, atBats) {
-//     var slg = totalBases / atBats;
-//     return slg;
-//   }
-//   hitting.isolatedPower = function(sluggingPercentage, battingAverage) {
-//     var iso = sluggingPercentage - battingAverage;
-//     return iso;
-//   }
-//   hitting.babip = function(hits, homeruns, atBats, strikeouts, sacrificeFlys) {
-//     var babip = (hits - homeruns) / (atBats - strikeouts - homeruns + sacrificeFlys);
-//     return babip;
-//   }
-//   hitting.onBasePercentage = function(hits, walks, hitByPitch, atBats, sacrificeFlys) {
-//     var obp = (hits + walks + hitByPitch) / (atBats + walks + hitByPitch + sacrificeFlys);
-//     return obp;
-//   }
-//   hitting.runsCreated = function(hits, walks, totalBases, atBats) {
-//     var rc = ((hits + walks) * totalBases) / (atBats + walks);
-//     return rc;
-//   }
-//   hitting.onBasePlusSlugging = function(onBasePercentage, sluggingPercentage) {
-//     var ops = onBasePercentage + sluggingPercentage;
-//     return ops;
-//   }
-//   hitting.weightedOnBaseAverage = function(walks, hitByPitch, singles, doubles, triples, homeruns, atBats, intentionalWalks, sacrificeFlys) {
-//     var woba = ((0.689 * walks) + (0.720 * hitByPitch) + (0.878 * singles) + (1.244 + doubles) + (1.573 + triples) + (2.024 + homeruns)) / (atBats + walks - intentionalWalks + sacrificeFlys + hitByPitch);
-//     return woba;
-//   }
-//   hitting.weightedRunsAboveAverage = function(weightedOnBaseAverage) {
-//     var wraa = (weightedOnBaseAverage - 0.317) / 1.25;
-//     return wraa;
-//   }
-// });
+app.factory('Pitching', function($http) {
+  var pitch = {};
+
+  pitch.walksPlusHitsPerInningPitched = function(hitsAllowed, walksAllowed, inningsPitched) {
+    var whip = (hitsAllowed + walksAllowed) / inningsPitched;
+    return whip;
+  };
+  pitch.earnedRunAverage = function(earnedRuns, inningsPitched) {
+    var era = (earnedRuns / inningsPitched) * 9;
+    return era;
+  };
+  pitch.ballsInPlay = function(groundBalls_allowed, flyBalls_allowed, lineDrives_allowed) {
+    var bip = groundBalls_allowed + flyBalls_allowed + lineDrives_allowed;
+    return bip;
+  };
+  pitch.groundBallPercentage = function(bip, groundBalls_allowed) {
+    var gbp = groundBalls_allowed / bip;
+    return gbp;
+  };
+  return pitch;
+});
+
+app.factory('Defense', function($http) {
+  var defensive = {};
+  defensive.fieldingPercentage = function(putouts, assists, errors) {
+    var fp = (putouts + assists) / (putouts + assists + errors);
+    return fp;
+  };
+  return defensive;
+});
+
+app.factory('Batting', function($http) {
+  var hitting = {};
+  hitting.battingAverage = function(atBats, hits) {
+    var ba = hits / atBats;
+    return ba;
+  };
+  hitting.plateAppearances = function(atBats, walks, hbp, sacrifices) {
+    var pa = atBats - (walks + hbp + sacrifices);
+    return pa;
+  };
+  hitting.walkPercentage = function(walks, plateAppearances) {
+    var wp = walks / plateAppearances;
+    return wp;
+  };
+  hitting.strikeoutPercentage = function(strikeouts, plateAppearances) {
+    var sop = strikeouts / plateAppearances;
+    return sop;
+  };
+  hitting.sluggingPercentage = function(homeruns, singles, doubles, triples, atBats) {
+    var slg = ((singles) + (doubles * 2) + (triples * 3) + (homeruns * 4)) / atBats;
+    return slg;
+  };
+  hitting.isolatedPower = function(sluggingPercentage, battingAverage) {
+    var iso = sluggingPercentage - battingAverage;
+    return iso;
+  };
+  hitting.babip = function(hits, homeruns, atBats, strikeouts, sacrificeFlys) {
+    var babip = (hits - homeruns) / (atBats - strikeouts - homeruns + sacrificeFlys);
+    return babip;
+  };
+  hitting.onBasePercentage = function(hits, walks, hitByPitch, atBats, sacrificeFlys) {
+    var obp = (hits + walks + hitByPitch) / (atBats + walks + hitByPitch + sacrificeFlys);
+    return obp;
+  };
+  hitting.runsCreated = function(hits, walks, singles, doubles, triples, homeruns, atBats) {
+    var rc = ((hits + walks) * ((singles) + (doubles * 2) + (triples * 3) + (homeruns * 4))) / (atBats + walks);
+    return rc;
+  };
+  hitting.onBasePlusSlugging = function(onBasePercentage, sluggingPercentage) {
+    var ops = onBasePercentage + sluggingPercentage;
+    return ops;
+  };
+  hitting.weightedOnBaseAverage = function(walks, hitByPitch, singles, doubles, triples, homeruns, atBats, intentionalWalks, sacrificeFlys) {
+    var woba = ((0.689 * walks) + (0.720 * hitByPitch) + (0.878 * singles) + (1.244 + doubles) + (1.573 + triples) + (2.024 + homeruns)) / (atBats + walks - intentionalWalks + sacrificeFlys + hitByPitch);
+    return woba;
+  };
+  hitting.weightedRunsAboveAverage = function(weightedOnBaseAverage) {
+    var wraa = (weightedOnBaseAverage - 0.317) / 1.25;
+    return wraa;
+  };
+  return hitting;
+});
 
 var teamId;
 
-app.controller('MainController', function($scope, $http, $location) {
-
+app.controller('MainController', function($scope, $http, $location, $cookies) {
+  $scope.logout = function() {
+    $cookies.remove('auth_token');
+    $location.path('/login');
+  };
 });
 
 app.controller('SignupController', function($scope, $http, $location) {
@@ -162,10 +204,8 @@ app.controller('LoginController', function($scope, $http, $location, $cookies) {
     })
     .success(function(data2) {
       console.log("Successfully signed in");
-      // $scope.username = data2;
       $location.path('/dashboard');
       console.log(data2);
-      // debugger
       $cookies.put('auth_token', data2.auth_token);
       $cookies.put('user_id', data2.id);
     })
@@ -186,7 +226,6 @@ app.controller('DashboardController', function($scope, $http, $location, $cookie
   })
   .success(function(data) {
     $scope.teams = data;
-    // console.log($scope.teams);
   })
   .catch(function(error) {
     console.log(error.message);
@@ -198,15 +237,32 @@ app.controller('DashboardController', function($scope, $http, $location, $cookie
   };
 });
 
-app.controller('RosterController', function($scope, $location, $http, $cookies) {
+app.controller('RosterController', function($scope, $location, $http, $cookies, Batting, Pitching, Defense) {
   var team = $cookies.get('team_id');
+  var bStats = [];
   $http({
     url: API + '/team-roster/' + team,
     method: 'POST'
   })
   .success(function(data) {
-    $scope.teamRoster = data;
-    console.log($scope.teamRoster);
+    bStats = data;
+    for (var i = 0; i < bStats.length; i++) {
+      bStats[i].BA = Batting.battingAverage(bStats[i].AB, bStats[i].H);
+      if (Number.isNaN(bStats[i].BA)) {
+        bStats[i].BA = '---';
+      } else {
+        bStats[i].BA = bStats[i].BA.toFixed(3);
+      }
+      bStats[i].ERA = Pitching.earnedRunAverage(bStats[i].ER, bStats[i].IP);
+      if (Number.isNaN(bStats[i].ERA)) {
+        bStats[i].ERA = '---';
+      } else {
+        bStats[i].ERA = bStats[i].ERA.toFixed(3);
+      }
+
+    }
+    console.log("TEAM ROSTER: ",bStats);
+    $scope.bStats = bStats;
   })
   .catch(function(error) {
     console.log(error.message);
@@ -219,16 +275,113 @@ app.controller('RosterController', function($scope, $location, $http, $cookies) 
 
 });
 
-app.controller('PlayerController', function($scope, $location, $http, $cookies) {
+app.controller('PlayerController', function($scope, $location, $http, $cookies, Batting, Pitching, Defense) {
   var player = $cookies.get('player_id');
+  var stats;
   console.log(player);
   $http({
     url: API + '/player-info/' + player,
     method: 'POST'
   })
   .success(function(data) {
-    $scope.playerInfo = data[0];
-    console.log($scope.playerInfo);
+    stats = data[0];
+    console.log(data);
+
+    // Offensive Stat Calculations
+    stats.BA = Batting.battingAverage(stats.AB, stats.H);
+    if (Number.isNaN(stats.BA)) {
+      stats.BA = '---';
+    } else {
+      stats.BA = stats.BA.toFixed(3);
+    }
+    stats.PA = Batting.plateAppearances(stats.AB, stats.BB, stats.HBP, stats.sacrifices);
+    stats.OBP = Batting.onBasePercentage(stats.H, stats.BB, stats.HBP, stats.AB, stats.sacrifices);
+    if (Number.isNaN(stats.OBP)) {
+      stats.OBP = '---';
+    } else {
+      stats.OBP = stats.OBP.toFixed(3);
+    }
+    stats.SLG = Batting.sluggingPercentage(stats.HR, stats.singles, stats.doubles, stats.triples, stats.AB);
+    if (Number.isNaN(stats.SLG)) {
+      stats.SLG = '---';
+    } else {
+      stats.SLG = stats.SLG.toFixed(3);
+    }
+    stats.OPS = Batting.onBasePlusSlugging(stats.OBP, stats.SLG);
+    if (Number.isNaN(stats.OPS)) {
+      stats.OPS = '---';
+    } else {
+      stats.OPS = stats.OPS;
+    }
+    stats.BABIP = Batting.babip(stats.H, stats.HR, stats.AB, stats.SO, stats.sacrifices);
+    if (Number.isNaN(stats.BABIP)) {
+      stats.BABIP = '---';
+    } else {
+      stats.BABIP = stats.BABIP.toFixed(3);
+    }
+    stats.BBperc = Batting.walkPercentage(stats.BB, stats.PA);
+    if (Number.isNaN(stats.BBperc)) {
+      stats.BBperc = '---';
+    } else {
+      stats.BBperc = stats.BBperc.toFixed(3);
+    }
+    stats.SOperc = Batting.strikeoutPercentage(stats.SO, stats.PA);
+    if (Number.isNaN(stats.SOperc)) {
+      stats.SOperc = '---';
+    } else {
+      stats.SOperc = stats.SOperc.toFixed(3);
+    }
+    stats.ISO = Batting.isolatedPower(stats.SLG, stats.BA);
+    if (Number.isNaN(stats.ISO)) {
+      stats.ISO = '---';
+    } else {
+      stats.ISO = stats.ISO.toFixed(3);
+    }
+    stats.RC = Batting.runsCreated(stats.H, stats.BB, stats.singles, stats.doubles, stats.triples, stats.HR, stats.AB);
+    stats.RC = stats.RC.toFixed(3);
+
+    stats.wOBA = Batting.weightedOnBaseAverage(stats.BB, stats.HBP, stats.singles, stats.doubles, stats.triples, stats.HR, stats.AB, stats.IBB, stats.sacrifices);
+    if (Number.isNaN(stats.wOBA)) {
+      stats.wOBA = '---';
+    } else {
+      stats.wOBA = stats.wOBA.toFixed(3);
+    }
+    stats.wRAA = Batting.weightedRunsAboveAverage(stats.wOBA);
+    if (Number.isNaN(stats.wRAA)) {
+      stats.wRAA = '---';
+    } else {
+      stats.wRAA = stats.wRAA.toFixed(3);
+    }
+
+    // Pitching Stat Calculations
+    stats.WHIP = Pitching.walksPlusHitsPerInningPitched(stats.H_allowed, stats.BB_allowed, stats.IP);
+    if (Number.isNaN(stats.WHIP)) {
+      stats.WHIP = '---';
+    } else {
+      stats.WHIP = stats.WHIP.toFixed(3);
+    }
+    stats.ERA = Pitching.earnedRunAverage(stats.ER, stats.IP);
+    if (Number.isNaN(stats.ERA)) {
+      stats.ERA = '---';
+    } else {
+      stats.ERA = stats.ERA.toFixed(3);
+    }
+    stats.BIP = Pitching.ballsInPlay(stats.groundBalls_allowed, stats.flyBalls_allowed, stats.lineDrives_allowed);
+    stats.GBperc = Pitching.groundBallPercentage(stats.BIP, stats.groundBalls_allowed);
+    if (Number.isNaN(stats.GBperc)) {
+      stats.GBperc = '---';
+    } else {
+      stats.GBperc = stats.GBperc.toFixed(3);
+    }
+
+    // Defensive Stat Calculations
+    stats.fielding_perc = Defense.fieldingPercentage(stats.PO, stats.A, stats.E);
+    if (Number.isNaN(stats.fielding_perc)) {
+      stats.fielding_perc = '---';
+    } else {
+      stats.fielding_perc = stats.fielding_perc.toFixed(3);
+    }
+    $scope.stats = stats;
   })
   .catch(function(error) {
     console.log(error.message);
@@ -294,7 +447,7 @@ app.controller('AddTeamController', function($scope, $http, $location, $cookies)
 });
 
 
-app.controller('StatEntryController', function($scope, $http, $location, $cookies) {
+app.controller('StatEntryController', function($scope, $http, $location, $cookies, Batting) {
 
   var teamId = $cookies.get('team_id');
   $http({
@@ -306,7 +459,6 @@ app.controller('StatEntryController', function($scope, $http, $location, $cookie
   })
   .success(function(data) {
     $scope.teamRoster = data;
-    console.log("Team Roster: ",$scope.teamRoster);
   })
   .catch(function(error) {
     console.log(error.message);
@@ -321,9 +473,34 @@ app.controller('StatEntryController', function($scope, $http, $location, $cookie
   };
 
   $scope.submitBattingStats = function(player) {
-    console.log(player.AB);
     $http({
       url: API + '/add-batting-stats',
+      method: 'POST',
+      data: player
+    })
+    .success(function(data) {
+      console.log("Batting Stats submitted");
+    })
+    .catch(function(error) {
+      console.log(error.message);
+    });
+  };
+
+  $scope.goToPitching = function() {
+    $location.path('/add-pitching-stats');
+  };
+
+  $scope.goToDefense = function() {
+    $location.path('/add-defense-stats');
+  };
+
+  $scope.goToDashboard = function() {
+    $location.path('/dashboard');
+  };
+
+  $scope.submitPitchingStats = function(player) {
+    $http({
+      url: API + '/add-pitching-stats',
       method: 'POST',
       data: player
     })
@@ -335,10 +512,11 @@ app.controller('StatEntryController', function($scope, $http, $location, $cookie
     });
   };
 
-  $scope.calcBattingStats = function() {
+  $scope.submitDefenseStats = function(player) {
     $http({
-      url: API + '/calc-batting-stats',
-      method: 'POST'
+      url: API + '/add-defense-stats',
+      method: 'POST',
+      data: player
     })
     .success(function(data) {
       console.log(data);
@@ -346,7 +524,67 @@ app.controller('StatEntryController', function($scope, $http, $location, $cookie
     .catch(function(error) {
       console.log(error.message);
     });
-    $location.path('/add-pitching-stats');
+  };
+
+});
+
+app.controller('StatDisplayController', function($scope, $http, $location) {
+
+  var bStats = [];
+
+  $scope.calcBattingStats = function() {
+    $http({
+      url: API + '/calc-batting-stats',
+      method: 'POST',
+      data: {
+        team: $cookies.get('team_id')
+      }
+    })
+    .success(function(data) {
+      bStats = data;
+      console.log("ARRAY: ",bStats);
+      for (var i = 0; i < bStats.length; i++) {
+
+        // BA
+        bStats[i].BA = Batting.battingAverage(bStats[i].AB, bStats[i].H);
+
+        // PA
+        bStats[i].PA = Batting.plateAppearances(bStats[i].AB, bStats[i].BB, bStats[i].HBP, bStats[i].sacrifices);
+
+        // OBP
+        bStats[i].OBP = Batting.onBasePercentage(bStats[i].H, bStats[i].BB, bStats[i].HBP, bStats[i].AB, bStats[i].sacrifices);
+
+        // SLG
+        bStats[i].SLG = Batting.sluggingPercentage(bStats[i].HR, bStats[i].singles, bStats[i].doubles, bStats[i].triples, bStats[i].AB);
+
+        // OPS
+        bStats[i].OPS = Batting.onBasePlusSlugging(bStats[i].OBP, bStats[i].SLG);
+
+        // BABIP
+        bStats[i].BABIP = Batting.babip(bStats[i].H, bStats[i].HR, bStats[i].AB, bStats[i].SO, bStats[i].sacrifices);
+
+        // BB%
+        bStats[i].BBperc = Batting.walkPercentage(bStats[i].BB, bStats[i].PA);
+
+        // SO%
+        bStats[i].SOperc = Batting.strikeoutPercentage(bStats[i].SO, bStats[i].PA);
+
+        // ISO
+        bStats[i].ISO = Batting.isolatedPower(bStats[i].SLG, bStats[i].BA);
+
+        // RC
+        bStats[i].RC = Batting.runsCreated(bStats[i].H, bStats[i].BB, bStats[i].singles, bStats[i].doubles, bStats[i].triples, bStats[i].HR, bStats[i].AB);
+
+        // wOBA
+        bStats[i].wOBA = Batting.weightedOnBaseAverage(bStats[i].BB, bStats[i].HBP, bStats[i].singles, bStats[i].doubles, bStats[i].triples, bStats[i].HR, bStats[i].AB, bStats[i].IBB, bStats[i].sacrifices);
+
+        // wRAA
+        bStats[i].wRAA = Batting.weightedRunsAboveAverage(bStats[i].wOBA);
+      }
+    })
+    .catch(function(error) {
+      console.log(error.message);
+    });
   };
 
   $scope.calcPitchingStats = function() {
@@ -360,7 +598,6 @@ app.controller('StatEntryController', function($scope, $http, $location, $cookie
     .catch(function(error) {
       console.log(error.message);
     });
-    $location.path('/add-defense-stats');
   };
 
   $scope.calcDefenseStats = function() {
@@ -378,6 +615,25 @@ app.controller('StatEntryController', function($scope, $http, $location, $cookie
   };
 });
 
-app.controller('StatDisplayController', function($scope, $http, $location) {
-
+app.run(function($rootScope, $location, $cookies) {
+  $rootScope.$on('$locationChangeStart', function(event, nextUrl, currentUrl) {
+    currentUrl = currentUrl.split('#');
+    nextUrl = nextUrl.split('#');
+    token = $cookies.get('auth_token');
+    if (token === undefined) {
+      if (nextUrl[1] === '/') {
+        $location.path('login');
+      } else if (nextUrl[1] === '/login') {
+        $location.path('/login');
+      } else if (nextUrl[1] === '/signup') {
+        $location.path('/signup');
+      } else if (nextUrl[1] === '/dashboard' || nextUrl[1] === '/player' || nextUrl[1] === '/roster' || nextUrl[1] === '/add-batting-stats' || nextUrl[1] === '/add-pitching-stats' || nextUrl[1] === '/add-defense-stats') {
+        $location.path('/login');
+      }
+    }
+    if (token !== undefined) {
+      $location.path(nextUrl[1]);
+    }
+    $cookies.put('nextUrl', nextUrl[1]);
+  });
 });

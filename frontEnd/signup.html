@@ -1,39 +1,34 @@
-<form method="post" novalidate class="add-team-form">
-  <div class="row">
-    <div class="medium-6 columns">
-      <label>
-        Pick Your Username:
-        <input type="text" placeholder="enter username here" ng-model="userName"></input>
-      </label>
+<div class="container-fluid">
+  <div class="col-md-1"></div>
+  <div class="col-md-1"></div>
+  <div class="col-md-8 login">
+    <form>
+      <div class="form-group">
+        <label>Pick Your Username</label>
+        <input type="text" class="form-control" placeholder="enter username here" ng-model="userName">
+      </div>
+      <div class="form-group">
+        <label>Pick Your Password</label>
+        <input type="password" class="form-control" placeholder="enter password here" ng-model="password">
+      </div>
+      <div class="form-group">
+        <label>Confirm Your Password</label>
+        <input type="password" class="form-control" placeholder="enter password here" ng-model="confirmPassword">
+      </div>
+      <div class="form-group">
+        <label>Email Address</label>
+        <input type="email" class="form-control" placeholder="enter your email here" ng-model="email">
+      </div>
+      <div class="row">
+        <button type="submit" ng-click="createAccount()" class="btn btn-default" name="button">Create Account</button>
+      </div>
+    </form>
+    <div class="row">
+      <br>
+      <span>Already have an account?</span><br>
+      <a href="#/login">Sign In</a>
     </div>
   </div>
-  <div class="row">
-    <div class="medium-6 columns">
-      <label>
-        Pick Your Password:
-        <input type="password" placeholder="enter password here" ng-model="password"></input>
-      </label>
-    </div>
-  </div>
-  <div class="row">
-    <div class="medium-6 columns">
-      <label>
-        Confirm Your Password:
-        <input type="password" placeholder="enter password here" ng-model="confirmPassword"></input>
-      </label>
-    </div>
-  </div>
-  <div class="row">
-    <div class="medium-6 columns">
-      <label>
-        Email Address:
-        <input type="email" placeholder="enter your email here" ng-model="email"></input>
-      </label>
-    </div>
-  </div>
-  <div class="row">
-    <div class="medium-6 columns">
-      <button type="submit" ng-click="createAccount()" class="expanded button success" name="button">Create Account<i class="icon ion-chevron-right right"></i></button>
-    </div>
-  </div>
-</form>
+  <div class="col-md-1"></div>
+  <div class="col-md-1"></div>
+</div>

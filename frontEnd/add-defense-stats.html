@@ -1,0 +1,55 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6 text-center statText">Defensive Stat Entry Dashboard</div>
+    <div class="col-md-3 text-right"></div>
+  </div>
+  <ul style="list-style: none;">
+    <li ng-repeat="player in teamRoster" class="rosterList">
+      <div class="row dashboardText playerNameText">
+        <div class="col-md-1">#{{player.number}}</div>
+        <div class="col-md-4">
+          <span>{{player.player_name}}</span>
+        </div>
+        <div class="col-md-6"></div>
+        <div class="col-md-1"><i class="icon ion-chevron-down"  ng-click="showForm(player)"></i></div>
+      </div>
+      <div ng-show="player.editing" class="statForm">
+        <form>
+          <div class="row">
+            <div class="col-md-1"></div>
+            <div class="col-md-1">
+              <label>Assists
+                <input type="text" class="form-control" ng-model="player.A" />
+              </label>
+            </div>
+            <div class="col-md-1">
+              <label>Putouts
+                <input type="text" class="form-control" ng-model="player.PO"/>
+              </label>
+            </div>
+            <div class="col-md-1">
+              <label>Errors
+                <input type="text" class="form-control" ng-model="player.E" />
+              </label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-4"></div>
+            <div class="col-md-4 text-center">
+              <button type="button" name="button" class="btn btn-default statButtons" ng-click="submitDefenseStats(player)">Save Player's Stats</button>
+            </div>
+            <div class="col-md-4"></div>
+          </div>
+        </form>
+      </div>
+    </li>
+  </ul>
+</div>
+<div class="row">
+  <div class="col-md-3"></div>
+  <div class="col-md-6">
+    <button type="button" name="button" class="btn btn-default text-center btn-block" ng-click="goToDashboard()">Finished?</button>
+  </div>
+  <div class="col-md-3"></div>
+</div>

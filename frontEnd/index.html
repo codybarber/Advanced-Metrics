@@ -3,19 +3,29 @@
 <head>
   <meta charset="utf-8">
   <title></title>
-  <link rel="stylesheet" href="css/foundation.css">
+  <link rel="stylesheet" href="css/bootstrap.min.css">
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/ionicons.css">
-  <link rel="stylesheet" href="css/footable.standalone.css">
   <script src="js/jquery.js"></script>
-  <script src="js/foundation.js"></script>
   <script src="js/angular.js"></script>
   <script src="js/angular-route.js"></script>
   <script src="js/angular-cookies.js"></script>
-  <script src="js/footable.js"></script>
   <script src="js/app.js"></script>
+  <div class="container-fluid" ng-controller="MainController">
+    <div class="row header">
+      <div class="col-md-6">
+        <a href="#/dashboard"><img class="headerLogo" src="css/logo.svg"></a>
+      </div>
+      <div class="col-md-3"></div>
+      <div class="col-md-3">
+        <button type="button" name="button" class="btn btn-default logoutButton" ng-click="logout()">Logout</button>
+      </div>
+    </div>
+  </div>
 </head>
 <body>
-  <ng-view></ng-view>
+  <div class="view">
+    <ng-view></ng-view>
+  </div>
 </body>
 </html>

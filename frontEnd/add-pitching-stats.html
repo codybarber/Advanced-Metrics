@@ -1,0 +1,127 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6 text-center statText">Pitching Stat Entry Dashboard</div>
+    <div class="col-md-3 text-right"></div>
+  </div>
+  <ul style="list-style: none;">
+    <li ng-repeat="player in teamRoster" class="rosterList">
+      <div class="row dashboardText playerNameText">
+        <div class="col-md-1">#{{player.number}}</div>
+        <div class="col-md-4">
+          <span>{{player.player_name}}</span>
+        </div>
+        <div class="col-md-6"></div>
+        <div class="col-md-1"><i class="icon ion-chevron-down" ng-click="showForm(player)"></i></div>
+      </div>
+      <div ng-show="player.editing" class="statForm">
+        <form>
+          <div class="row">
+            <div class="col-md-1"></div>
+            <div class="col-md-1">
+              <label>IP
+                <input type="text" placeholder="" class="form-control" ng-model="player.IP" />
+              </label>
+            </div>
+            <div class="col-md-1">
+              <label>H
+                <input type="text" placeholder="" class="form-control" ng-model="player.H" />
+              </label>
+            </div>
+            <div class="col-md-1">
+              <label>R
+                <input type="text" placeholder="" class="form-control" ng-model="player.R" />
+              </label>
+            </div>
+            <div class="col-md-1">
+              <label>ER
+                <input type="text" placeholder="" class="form-control" ng-model="player.ER" />
+              </label>
+            </div>
+            <div class="col-md-1">
+              <label>BB
+                <input type="text" placeholder="" class="form-control" ng-model="player.BB" />
+              </label>
+            </div>
+            <div class="col-md-1">
+              <label>SO
+                <input type="text" placeholder="" class="form-control" ng-model="player.K" />
+              </label>
+            </div>
+            <div class="col-md-1">
+              <label>BF
+                <input type="text" placeholder="" class="form-control" ng-model="player.BF" />
+              </label>
+            </div>
+            <div class="col-md-1">
+              <label>HR
+                <input type="text" placeholder="" class="form-control" ng-model="player.HR" />
+              </label>
+            </div>
+            <div class="col-md-1">
+              <label>GB
+                <input type="text" placeholder="" class="form-control" ng-model="player.ground_balls" />
+              </label>
+            </div>
+            <div class="col-md-1">
+              <label>FB
+                <input type="text" placeholder="" class="form-control" ng-model="player.fly_balls" />
+              </label>
+            </div>
+            <div class="col-md-1"></div>
+          </div>
+          <div class="row">
+            <div class="col-md-1"></div>
+            <div class="col-md-4"></div>
+            <div class="col-md-1">
+              <label>LD
+                <input type="text" placeholder="" class="form-control" ng-model="player.line_drives" />
+              </label>
+            </div>
+            <div class="col-md-1">
+              <label>RS
+                <input type="text" placeholder="" class="form-control" ng-model="player.run_support" />
+              </label>
+            </div>
+            <div class="col-md-4"></div>
+            <div class="col-md-1"></div>
+          </div>
+          <div class="row">
+            <div class="col-md-1"></div>
+            <div class="col-md-1"></div>
+            <div class="col-md-4 radio">
+              <label>Did Pitcher Get the...</label>
+              <input name="win" type="hidden" value="0" class="form-control" ng-model="player.W"/>
+              <input id="win" type="checkbox" name="win" class="form-control" value="1" ng-model="player.W"><label for="win">Win</label>
+              <input name="loss" type="hidden" value="0" class="form-control" ng-model="player.L"/>
+              <input id="loss" type="checkbox" name="loss" class="form-control" value="1" ng-model="player.L"><label for="loss">Loss</label>
+              <input name="save" type="hidden" value="0" class="form-control" ng-model="player.S" />
+              <input id="save" type="checkbox" name="save" class="form-control" value="1" ng-model="player.S"><label for="save">Save</label>
+            </div>
+            <div class="col-md-4 checkbox">
+              <label>Complete Game?</label>
+              <input type="radio" name="yes" value="1" id="yes" class="form-control" ng-model="player.CG"><label for="yes">Yes</label>
+              <input type="radio" name="no" value="0" id="no" class="form-control" ng-model="player.CG"><label for="no">No</label>
+            </div>
+            <div class="col-md-1"></div>
+            <div class="col-md-1"></div>
+          </div>
+          <div class="row">
+            <div class="col-md-4"></div>
+            <div class="col-md-4 text-center">
+              <button type="button" name="button" class="btn btn-default statButtons" ng-click="submitPitchingStats(player)">Save Pitcher's Stats</button>
+            </div>
+            <div class="col-md-4"></div>
+          </div>
+        </form>
+      </div>
+    </li>
+  </ul>
+</div>
+<div class="row">
+  <div class="col-md-3"></div>
+  <div class="col-md-6">
+    <button type="button" name="button" class="btn btn-default btn-block text-center" ng-click="goToDefense()">Add Defensive Stats</button>
+  </div>
+  <div class="col-md-3"></div>
+</div>
