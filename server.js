@@ -249,13 +249,13 @@ app.post('/add-defense-stats', function(request, response) {
   console.log(request.body);
   db.any(
     `INSERT INTO
-    defense("G", "A", "PO", "E", player_id)
+    defense("defenseG", "A", "PO", "E", player_id)
     VALUES
     (1, $(A), $(PO), $(E), $(id))
     ON CONFLICT
     (player_id)
     DO UPDATE SET
-    "G" = coalesce(defense."G", 0) + EXCLUDED."G",
+    "defenseG" = coalesce(defense."defenseG", 0) + EXCLUDED."G",
     "A" = coalesce(defense."A", 0) + EXCLUDED."A",
     "PO" = coalesce(defense."PO", 0) + EXCLUDED."PO",
     "E" = coalesce(defense."E", 0) + EXCLUDED."E"`, request.body)
