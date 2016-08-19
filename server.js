@@ -193,28 +193,28 @@ app.post('/add-pitching-stats', function(request, response) {
   request.body.CG = request.body.CG || 0;
   db.any(
     `INSERT INTO
-    pitching("G", "W", "L", "CG", "S", "IP", "H", "R", "ER", "BB", "K", "BF", "HR", "ground_balls", "fly_balls", "line_drives", "run_support", player_id)
+    pitching("G_pitched", "W", "L", "CG", "S", "IP", "H_allowed", "R_allowed", "ER", "BB_allowed", "K_thrown", "BF", "HR_allowed", "groundBalls_allowed", "flyBalls_allowed", "lineDrives_allowed", "run_support", player_id)
     VALUES
     (1, $(W), $(L), $(CG), $(S), $(IP), $(H), $(R), $(ER), $(BB), $(K), $(BF), $(HR), $(ground_balls), $(fly_balls), $(line_drives), $(run_support), $(id))
     ON CONFLICT
     (player_id)
     DO UPDATE SET
-    "G" = coalesce(pitching."G", 0) + EXCLUDED."G",
+    "G" = coalesce(pitching."G_pitched", 0) + EXCLUDED."G",
     "W" = coalesce(pitching."W", 0) + EXCLUDED."W",
     "L" = coalesce(pitching."L", 0) + EXCLUDED."L",
     "CG" = coalesce(pitching."CG", 0) + EXCLUDED."CG",
     "S" = coalesce(pitching."S", 0) + EXCLUDED."S",
     "IP" = coalesce(pitching."IP", 0) + EXCLUDED."IP",
-    "H" = coalesce(pitching."H", 0) + EXCLUDED."H",
-    "R" = coalesce(pitching."R", 0) + EXCLUDED."R",
+    "H" = coalesce(pitching."H_allowed", 0) + EXCLUDED."H",
+    "R" = coalesce(pitching."R_allowed", 0) + EXCLUDED."R",
     "ER" = coalesce(pitching."ER", 0) + EXCLUDED."ER",
-    "BB" = coalesce(pitching."BB", 0) + EXCLUDED."BB",
-    "K" = coalesce(pitching."K", 0) + EXCLUDED."K",
+    "BB" = coalesce(pitching."BB_allowed", 0) + EXCLUDED."BB",
+    "K" = coalesce(pitching."K_thrown", 0) + EXCLUDED."K",
     "BF" = coalesce(pitching."BF", 0) + EXCLUDED."BF",
-    "HR" = coalesce(pitching."HR", 0) + EXCLUDED."HR",
-    "ground_balls" = coalesce(pitching."ground_balls", 0) + EXCLUDED."ground_balls",
-    "fly_balls" = coalesce(pitching."fly_balls", 0) + EXCLUDED."fly_balls",
-    "line_drives" = coalesce(pitching."line_drives", 0) + EXCLUDED."line_drives",
+    "HR" = coalesce(pitching."HR_allowed", 0) + EXCLUDED."HR",
+    "ground_balls" = coalesce(pitching."groundBalls_allowed", 0) + EXCLUDED."ground_balls",
+    "fly_balls" = coalesce(pitching."flyBalls_allowedalls", 0) + EXCLUDED."fly_balls",
+    "line_drives" = coalesce(pitching."lineDrives_allowedrives", 0) + EXCLUDED."line_drives",
     "run_support" = coalesce(pitching."run_support", 0) + EXCLUDED."run_support"`, request.body)
   .then(function(data) {
     console.log(data);
@@ -292,7 +292,9 @@ app.post('/get-roster', function(request, response) {
 
   db.any(
     `SELECT
-    *
+    players.player_name,
+    players.number,
+    players.id
     FROM
     batting
     LEFT OUTER JOIN
