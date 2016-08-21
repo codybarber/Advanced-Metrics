@@ -3,7 +3,7 @@
 
 
 ##Overview of Project
-
+Saber Suite is a tool that provides the user with advanced metrics for a baseball player after simply entering in basic statistics from a game's boxscore. Once a user is signed in, they can create a team, add players to that team, enter in the basic statistics for that player, then see some of the most important advanced baseball metrics without having to do any of the hard work themselves. The statistical data for the teams and players is saved in the database, so every time the user signs in, all of the information is still there and ready to be updated whenever a user provides more stats.
 
 
 ##Technologies, Frameworks, and Programming Languages used
@@ -52,4 +52,4 @@ Displaying a Player's Stats
 
 ##URL to live project
 
-[Check it out!]()
+[Check it out!](http://saber-suite.herokuapp.com)
