@@ -53,3 +53,5 @@ Displaying a Player's Stats
 ##URL to live project
 
 [Check it out!](http://saber-suite.herokuapp.com)
+* Demo Username: stats-test
+* Demo Password: 123
